@@ -244,7 +244,7 @@ def mostrar_relatorio():
         
         status = "OK"
         if quantidade < 5:
-            status = "BAIXO-Atenção"
+            status = "BAIXO-[ALERTA]"
         
         dias_em_estoque_str = "N/A"
         
