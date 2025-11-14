@@ -135,6 +135,42 @@ def menu_movimentacao():
     else:
         print("Opção inválida.")
 
+def excluir_produto():
+    print("\n--- Exclusão de Produto ---")
+    
+    try:
+        id_busca = int(input("Digite o ID do produto que deseja excluir: "))
+    except ValueError:
+        print("Erro: O ID deve ser um número inteiro.")
+        return
+
+    conn = conectar_bd()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("SELECT nome FROM produtos WHERE id = ?", (id_busca,))
+        produto = cursor.fetchone()
+        
+        if produto:
+            nome_produto = produto[0]
+            confirmacao = input(f"Tem certeza que deseja excluir o produto '{nome_produto}' (ID: {id_busca})? (sim/nao): ").lower()
+            
+            if confirmacao == 'sim':
+                cursor.execute("DELETE FROM produtos WHERE id = ?", (id_busca,))
+                cursor.execute("DELETE FROM movimentacoes WHERE produto_id = ?", (id_busca,))
+                conn.commit()
+                print(f"Produto '{nome_produto}' e seu histórico excluídos com sucesso do banco de dados!")
+            else:
+                print("Exclusão cancelada.")
+        else:
+            print(f"Produto com ID {id_busca} não encontrado.")
+
+    except Exception as e:
+        print(f"Ocorreu um erro ao excluir: {e}")
+        
+    finally:
+        conn.close()
+
 def exibir_menu():
     print("\n--- Mini-ERP de Estoque ------------------")
     print("1. Cadastrar Produto")
