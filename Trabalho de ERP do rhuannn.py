@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from datetime import datetime
+TAXA_MANUTENCAO_ANUAL = 0.25
 
 def conectar_bd():
     conexao = sqlite3.connect('estoque.db')
@@ -235,8 +236,8 @@ def mostrar_relatorio():
         return
 
     print("-" * 105)
-    print(f"| {'ID':<3} | {'Nome do Produto':<20} | {'Categoria':<15} | {'Preço':<8} | {'Qtd.':<5} | {'Status':<10} | {'Dias em Estoque (TMR)':<20} |")
-    print("-" * 105)
+    print(f"| {'ID':<3} | {'Nome do Produto':<20} | {'Categoria':<15} | {'Preço':<8} | {'Qtd.':<5} | {'Status':<10} | {'Dias em Estoque':<20} |")
+    print("-" * 103)
 
     for p in produtos:
         id, nome, categoria, preco, quantidade, data_cadastro, data_ultima_saida = p
@@ -264,10 +265,13 @@ def mostrar_relatorio():
         linha = f"| {id:<3} | {nome:<20} | {categoria:<15} | R$ {preco:.2f} | {quantidade:<5} | {status:<10} | {dias_em_estoque_str:<20} |"
         print(linha)
 
+    custo_manutencao_anual = total_custo_estoque * TAXA_MANUTENCAO_ANUAL
+    
     print("-" * 105)
     print(f"Total de produtos diferentes cadastrados: {len(produtos)}")
-    print(f"Custo Total de Estoque (Relatório Gerencial): R$ {total_custo_estoque:.2f}")
-
+    print(f"Custo Estimado de Manutenção de Estoque ({TAXA_MANUTENCAO_ANUAL*100:.0f}% ao ano):")
+    print(f"  Anual: R$ {custo_manutencao_anual:.2f}")
+    print("---------------------------------------------")
 def gerar_dashboard_todos():
     print("\n--- Dashboards de Acompanhamento  ---")
     
