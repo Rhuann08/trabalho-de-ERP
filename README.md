@@ -6,6 +6,7 @@ Tecnologias Usadas:
  Python 3
  SQLite3 (Para salvar os dados)
  Matplotlib (Para gerar o grafico do Dashboard)
+ datetime (Para registrar e calcular o Tempo de Permanencia dos itens)
 
 Funcionalidades Implementadas:
 
