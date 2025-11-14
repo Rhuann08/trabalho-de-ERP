@@ -136,11 +136,11 @@ def menu_movimentacao():
         print("Opção inválida.")
 
 def exibir_menu():
-    print("\n--- Mini-ERP de Estoque -------------------")
+    print("\n--- Mini-ERP de Estoque ------------------")
     print("1. Cadastrar Produto")
     print("2. Movimentação de Estoque")
     print("3. Excluir Produto")
     print("4. Mostrar Relatório Gerencial")
     print("5. Dashboard")
     print("6. Sair do Programa")
-    print("---------------------------------------------")
+    print("--------------------------------------------")
