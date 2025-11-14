@@ -170,6 +170,57 @@ def excluir_produto():
         
     finally:
         conn.close()
+        
+def mostrar_relatorio():
+    print("\n--- Relatório Gerencial de Estoque ---")
+    
+    conn = conectar_bd()
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT id, nome, categoria, preco, quantidade, data_cadastro, data_ultima_saida FROM produtos ORDER BY id")
+    produtos = cursor.fetchall()
+    conn.close()
+    
+    total_custo_estoque = 0
+    formato_data = "%Y-%m-%d %H:%M:%S"
+    
+    if not produtos:
+        print("O estoque está vazio no banco de dados.")
+        return
+
+    print("-" * 105)
+    print(f"| {'ID':<3} | {'Nome do Produto':<20} | {'Categoria':<15} | {'Preço':<8} | {'Qtd.':<5} | {'Status':<10} | {'Dias em Estoque (TMR)':<20} |")
+    print("-" * 105)
+
+    for p in produtos:
+        id, nome, categoria, preco, quantidade, data_cadastro, data_ultima_saida = p
+        
+        custo_unitario = preco * quantidade
+        total_custo_estoque += custo_unitario
+        
+        status = "OK"
+        if quantidade < 5:
+            status = "BAIXO-Atenção"
+        
+        dias_em_estoque_str = "N/A"
+        
+        if data_cadastro:
+            data_inicial = datetime.strptime(data_cadastro, formato_data)
+            
+            if data_ultima_saida:
+                data_final = datetime.strptime(data_ultima_saida, formato_data)
+            else:
+                data_final = datetime.now() 
+            
+            diferenca = data_final - data_inicial
+            dias_em_estoque_str = str(diferenca.days) + " dias"
+
+        linha = f"| {id:<3} | {nome:<20} | {categoria:<15} | R$ {preco:.2f} | {quantidade:<5} | {status:<10} | {dias_em_estoque_str:<20} |"
+        print(linha)
+
+    print("-" * 105)
+    print(f"Total de produtos diferentes cadastrados: {len(produtos)}")
+    print(f"Custo Total de Estoque (Relatório Gerencial): R$ {total_custo_estoque:.2f}")
 
 def exibir_menu():
     print("\n--- Sistema ERP de Estoque ------------------")
