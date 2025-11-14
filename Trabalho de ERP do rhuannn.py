@@ -108,7 +108,7 @@ def saida_estoque():
     try:
         id_produto = int(input("ID do Produto para saida: "))
         quantidade = int(input("Quantidade a ser subtraida: "))
-        data_saida_str = input("Digite a data de saida (ex:2025-11-14): ")
+        data_saida_str = input("Digite a data de saida(ex:2025-11-14): ")
         datetime.strptime(data_saida_str, "%Y-%m-%d")
         
     except ValueError:
